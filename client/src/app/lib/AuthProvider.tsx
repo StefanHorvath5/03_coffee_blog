@@ -11,7 +11,7 @@ import {
   login as apiLogin,
   logout as apiLogout,
   register as apiRegister,
-} from "./api";
+} from "./api/authApi";
 import { User } from "./types";
 
 const TOKEN_KEY = "accessToken";

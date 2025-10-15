@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect } from "react";
-import { createItem, updateItem } from "../lib/api";
+import { createItem, updateItem } from "../lib/api/itemsApi";
 import { Item } from "../lib/types";
 import ErrorMessage from "../components/ErrorMessage";
 import { useAuth } from "../lib/AuthProvider";

@@ -43,7 +43,6 @@ export class AuthController {
         user: { id: user.id, email: user.email, role: user.role },
       };
     } catch (err) {
-      console.log(err?.message);
       return {
         success: false,
         message: 'Unable to log in',
@@ -112,27 +111,4 @@ export class AuthController {
     return req.user;
   }
 
-  @Get('public')
-  findAll() {
-    return [{ hi: 'hi' }];
-  }
-
-  @Post('forgot')
-  async forgot(@Body() body: { email: string }) {
-    const base = process.env.FRONTEND_ORIGIN as string;
-    await this.authService.requestPasswordReset(body.email, base);
-    return { ok: true };
-  }
-
-  @Post('reset')
-  async reset(
-    @Body() body: { userId: string; token: string; newPassword: string },
-  ) {
-    await this.authService.resetPassword(
-      body.userId,
-      body.token,
-      body.newPassword,
-    );
-    return { ok: true };
-  }
 }

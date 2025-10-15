@@ -4,7 +4,6 @@ import { AuthService } from './auth.service';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt/jwt.strategy';
-import { MailService } from 'src/utils/mail.service';
 
 @Module({
   imports: [
@@ -12,7 +11,7 @@ import { MailService } from 'src/utils/mail.service';
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET,
       signOptions: {
-        expiresIn: (process.env.JWT_ACCESS_EXPIRES) as unknown as
+        expiresIn: process.env.JWT_ACCESS_EXPIRES as unknown as
           | number
           | `${number}${'s' | 'm' | 'h' | 'd'}`,
       },
@@ -20,6 +19,6 @@ import { MailService } from 'src/utils/mail.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, MailService],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

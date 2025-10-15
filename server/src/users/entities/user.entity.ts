@@ -25,10 +25,4 @@ export class User {
 
   @Column({ type: 'text', nullable: true })
   currentHashedRefreshToken?: string | null;
-
-  @Column({ type: 'text', nullable: true })
-  passwordResetTokenHash?: string | null;
-
-  @Column({ type: 'timestamptz', nullable: true })
-  passwordResetTokenExpires?: Date | null;
 }

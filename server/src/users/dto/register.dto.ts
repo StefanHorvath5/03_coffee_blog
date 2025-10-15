@@ -5,7 +5,7 @@ export class RegisterDto {
   @IsNotEmpty({ message: 'Email must not be empty.' })
   email: string;
 
-  //   @MinLength(6)
+  //TODO:   @MinLength(6)
   @IsNotEmpty({ message: 'Password must not be empty.' })
   password: string;
 }

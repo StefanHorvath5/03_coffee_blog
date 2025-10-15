@@ -45,21 +45,4 @@ export class UsersService {
     );
   }
 
-  setPasswordResetToken(userId: string, tokenHash: string, expires: Date) {
-    return this.usersRepository.update(
-      { id: userId },
-      { passwordResetTokenHash: tokenHash, passwordResetTokenExpires: expires },
-    );
-  }
-
-  async updatePassword(id: string, passwordHash: string) {
-    await this.usersRepository.update(id, { passwordHash });
-  }
-
-  clearPasswordReset(userId: string) {
-    return this.usersRepository.update(
-      { id: userId },
-      { passwordResetTokenHash: null, passwordResetTokenExpires: null },
-    );
-  }
 }
