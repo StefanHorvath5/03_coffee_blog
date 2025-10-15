@@ -10,7 +10,6 @@ import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from 'src/users/dto/register.dto';
 import { LoginDto } from 'src/users/dto/login.dto';
 import { MailService } from 'src/utils/mail.service';
-import { User } from 'src/users/entities/user.entity';
 
 export interface UserResponse {
   id: string;
@@ -47,13 +46,17 @@ export class AuthService {
   private signAccess(jwtPayload: JwtPayload) {
     return this.jwtService.sign(jwtPayload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_ACCESS_EXPIRES,
+      expiresIn: process.env.JWT_ACCESS_EXPIRES as unknown as
+        | number
+        | `${number}${'s' | 'm' | 'h' | 'd'}`,
     });
   }
   private signRefresh(jwtPayload: JwtPayload) {
     return this.jwtService.sign(jwtPayload, {
       secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: process.env.JWT_REFRESH_EXPIRES,
+      expiresIn: process.env.JWT_REFRESH_EXPIRES as unknown as
+        | number
+        | `${number}${'s' | 'm' | 'h' | 'd'}`,
     });
   }
 

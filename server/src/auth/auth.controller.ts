@@ -13,7 +13,7 @@ import { Response, Request } from 'express';
 import { AuthService, JwtPayload } from './auth.service';
 import { LoginDto } from 'src/users/dto/login.dto';
 import { RegisterDto } from 'src/users/dto/register.dto';
-import { JwtService } from '@nestjs/jwt/dist/jwt.service';
+import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 
 @Controller('api/auth')
@@ -119,7 +119,7 @@ export class AuthController {
 
   @Post('forgot')
   async forgot(@Body() body: { email: string }) {
-    const base = process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
+    const base = process.env.FRONTEND_ORIGIN as string;
     await this.authService.requestPasswordReset(body.email, base);
     return { ok: true };
   }

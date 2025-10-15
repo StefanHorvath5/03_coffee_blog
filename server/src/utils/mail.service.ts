@@ -6,7 +6,7 @@ export class MailService {
   private transporter: nodemailer.Transporter;
   constructor() {
     const host = process.env.SMTP_HOST;
-    const port = Number(process.env.SMTP_PORT || 587);
+    const port = Number(process.env.SMTP_PORT);
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
     this.transporter = nodemailer.createTransport({
@@ -27,7 +27,7 @@ export class MailService {
       </div>
     `;
     await this.transporter.sendMail({
-      from: process.env.EMAIL_FROM || 'no-reply@myapp.local',
+      from: process.env.EMAIL_FROM,
       to,
       subject: 'Reset your password',
       html,

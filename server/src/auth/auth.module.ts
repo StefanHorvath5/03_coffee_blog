@@ -10,16 +10,16 @@ import { MailService } from 'src/utils/mail.service';
   imports: [
     UsersModule,
     JwtModule.register({
-      secret: process.env.JWT_ACCESS_SECRET || 'defaultSecret',
-      signOptions: { expiresIn: process.env.JWT_ACCESS_EXPIRES || '1h' },
+      secret: process.env.JWT_ACCESS_SECRET,
+      signOptions: {
+        expiresIn: (process.env.JWT_ACCESS_EXPIRES) as unknown as
+          | number
+          | `${number}${'s' | 'm' | 'h' | 'd'}`,
+      },
       global: true,
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    MailService
-  ],
+  providers: [AuthService, JwtStrategy, MailService],
 })
 export class AuthModule {}
