@@ -6,7 +6,8 @@ export interface User {
 export interface Item {
   id: string;
   title: string;
-  description: string;
+  // content stored as JSON from the server: { html: string }
+  content?: { html: string };
 }
 
 export enum Roles {

@@ -1,21 +1,22 @@
 import { fetchWithAuth } from "./authApi";
 
 export async function getItems() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/items`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
   if (!res.ok) throw new Error("Failed to fetch items");
   return res.json();
 }
 
 export async function createItem(
-  data: { title: string; description: string },
+  data: { title: string; content: string },
   accessToken: string | null,
   setAccessToken: (token: string | null) => void
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/items`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/posts`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // backend expects { title, content } where content is an HTML string
       body: JSON.stringify(data),
     },
     accessToken,
@@ -27,12 +28,12 @@ export async function createItem(
 
 export async function updateItem(
   id: string,
-  data: { title: string; description: string },
+  data: { title: string; content: string },
   accessToken: string | null,
   setAccessToken: (token: string | null) => void
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/items/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -51,7 +52,7 @@ export async function deleteItem(
   setAccessToken: (token: string | null) => void
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/items/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`,
     {
       method: "DELETE",
     },

@@ -14,13 +14,14 @@ export default function ItemForm({
   onSuccess: () => void;
 }) {
   const [title, setTitle] = useState(item?.title || "");
-  const [description, setDescription] = useState(item?.description || "");
+  // content is stored as { html: string } on the server
+  const [content, setContent] = useState(item?.content?.html || "");
   const [error, setError] = useState("");
   const { accessToken, setAccessToken } = useAuth();
 
   useEffect(() => {
     setTitle(item?.title || "");
-    setDescription(item?.description || "");
+    setContent(item?.content?.html || "");
   }, [item]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -30,15 +31,15 @@ export default function ItemForm({
       if (item) {
         await updateItem(
           item.id,
-          { title, description },
+          { title, content },
           accessToken,
           setAccessToken
         );
       } else {
-        await createItem({ title, description }, accessToken, setAccessToken);
+        await createItem({ title, content }, accessToken, setAccessToken);
       }
       setTitle("");
-      setDescription("");
+      setContent("");
       onSuccess();
     } catch (err: any) {
       setError(err.message);
@@ -56,13 +57,12 @@ export default function ItemForm({
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border rounded"
       />
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
+      <textarea
+        placeholder="HTML content"
+        value={content}
         required
-        onChange={(e) => setDescription(e.target.value)}
-        className="w-full p-2 border rounded"
+        onChange={(e) => setContent(e.target.value)}
+        className="w-full p-2 border rounded h-40"
       />
       <button
         type="submit"

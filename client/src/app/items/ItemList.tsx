@@ -43,7 +43,7 @@ export default function ItemList({ onEdit }: { onEdit: (item: Item) => void }) {
           >
             <div>
               <div className="font-bold">{item.title}</div>
-              <div>{item.description}</div>
+              <div className="whitespace-pre-wrap">{item.content?.html}</div>
             </div>
             {user && (
               <>
