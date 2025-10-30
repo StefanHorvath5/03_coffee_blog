@@ -17,7 +17,7 @@ import { ItemsModule } from './items/items.module';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true, // dev only
+      synchronize: true, // TODO: dev only
     }),
     ConfigModule.forRoot({
       isGlobal: true,
