@@ -31,9 +31,13 @@ export class PostsController {
     return this.postsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.postsService.findOne(id);
+  // }
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.postsService.findOne(slug);
   }
 
   @Patch(':id')

@@ -20,8 +20,8 @@ export class PostsService {
     return this.postsRepo.find();
   }
 
-  findOne(id: string) {
-    return this.postsRepo.findOneBy({ id });
+  findOne(slug: string) {
+    return this.postsRepo.findOneBy({ slug });
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {

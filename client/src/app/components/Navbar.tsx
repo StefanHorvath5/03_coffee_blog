@@ -1,39 +1,14 @@
-"use client";
 import Link from "next/link";
-import { useAuth } from "../lib/AuthProvider";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
-  const router = useRouter();
-
   return (
     <nav className="flex items-center justify-between p-4 bg-gray-100 mb-4">
-      <Link href="/" className="font-bold">
-        Auth Demo
+      <Link href="/" className="font-bold text-lg">
+        Coffee Explained
       </Link>
       <div className="space-x-4">
-        <Link href="/posts">Posts Admin</Link>
-        <Link href="/posts">Posts</Link>
-        {user ? (
-          <>
-            <Link href="/profile">Profile</Link>
-            <button
-              onClick={() => {
-                logout();
-                router.push("/login");
-              }}
-              className="bg-red-500 text-white px-2 py-1 rounded"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link href="/login">Login</Link>
-            <Link href="/register">Register</Link>
-          </>
-        )}
+        <Link href="/about">About us</Link>
+        <Link href="/contact">Contact</Link>
       </div>
     </nav>
   );

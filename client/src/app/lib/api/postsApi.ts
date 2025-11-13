@@ -7,6 +7,12 @@ export async function getPosts() {
   return res.json();
 }
 
+export async function getPost(slug: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/posts/${slug}`);
+  if (!res.ok) throw new Error("Failed to fetch post");
+  return res.json();
+}
+
 export async function createPost(
   data: { title: string; slug?: string; content: ContentBlock[] },
   accessToken: string | null,
