@@ -3,14 +3,63 @@ export interface User {
   email: string;
   role: string;
 }
-export interface Item {
+export type ContentData = {
+  text?: string;
+  url?: string;
+  caption?: string;
+  author?: string;
+};
+
+export type ContentBlock = {
+  type: string;
+  data: ContentData;
+};
+
+export interface Post {
   id: string;
   title: string;
-  // content stored as JSON from the server: { html: string }
-  content?: { html: string };
+  slug?: string;
+  content?: ContentBlock[];
+  mainImageUrl: string;
+  metaDescription: string;
+  sources: string;
+  hashtags: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export enum Roles {
   ADMIN = "admin",
   user = "user",
 }
+
+export const ALLOWED_TAGS = new Set([
+  "p",
+  "div",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "img",
+  "span",
+  "table",
+  "th",
+  "td",
+  "b",
+  "hr",
+]);
+
+export const ALLOWED_ATTRS = new Set([
+  "alt",
+  "src",
+  "class",
+  "id",
+  "className",
+  "placeholder",
+  "title",
+  "width",
+  "height",
+  "style",
+]);

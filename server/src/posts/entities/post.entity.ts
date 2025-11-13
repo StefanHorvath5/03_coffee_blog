@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 interface ContentData {
   text?: string;
@@ -23,9 +30,31 @@ export class Post {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   title!: string;
+
+  @Index({ unique: true })
+  @Column({ type: 'varchar', nullable: false })
+  slug: string;
 
   @Column({ type: 'jsonb' })
   content?: ContentBlock[];
+
+  @Column({ type: 'varchar', nullable: true })
+  mainImageUrl: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  metaDescription: string;
+
+  @Column({ type: 'text', nullable: true })
+  sources: string;
+
+  @Column({ type: 'text', nullable: true })
+  hashtags: string;
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updatedAt: Date;
 }

@@ -10,7 +10,17 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
   title: string;
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty({ message: 'Slug must not be empty if provided.' })
+  slug: string;
+
+  @IsOptional()
   @IsArray()
   @IsNotEmpty({ message: 'Content must not be empty if provided.' })
   content: ContentBlock[];
+
+  mainImageUrl: string;
+  metaDescription: string;
+  sources: string;
+  hashtags: string;
 }

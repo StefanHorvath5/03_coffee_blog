@@ -13,7 +13,8 @@ export default function Navbar() {
         Auth Demo
       </Link>
       <div className="space-x-4">
-        <Link href="/items">Items</Link>
+        <Link href="/posts">Posts Admin</Link>
+        <Link href="/posts">Posts</Link>
         {user ? (
           <>
             <Link href="/profile">Profile</Link>
