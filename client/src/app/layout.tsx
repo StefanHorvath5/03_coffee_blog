@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./lib/AuthProvider";
 
@@ -62,10 +63,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased has-pattern`}
       >
         <AuthProvider>
           <Navbar />
+          <Hero />
           <main className="container mx-auto p-4">{children}</main>
           <Footer />
         </AuthProvider>

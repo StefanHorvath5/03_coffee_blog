@@ -1,0 +1,93 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Post } from "../lib/types";
+
+type Props = { posts: Post[] };
+
+export default function TopCarousel({ posts }: Props) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!posts || posts.length === 0) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % posts.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [posts]);
+
+  if (!posts || posts.length === 0) return null;
+
+  const current = posts[index];
+
+  return (
+    <section className="container mx-auto mb-6">
+      <div className="relative rounded-lg overflow-hidden shadow-lg">
+        {current.mainImageUrl ? (
+          <div className="relative h-56 sm:h-72 md:h-80 lg:h-96">
+            <Image
+              src={current.mainImageUrl}
+              alt={current.title}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          </div>
+        ) : (
+          <div className="h-56 sm:h-72 md:h-80 lg:h-96 bg-amber-100" />
+        )}
+
+        <div className="absolute inset-0 flex items-end">
+          <div className="p-6 pb-8 text-white w-full bg-gradient-to-t from-black/60 via-transparent to-transparent">
+            <h3 className="text-2xl md:text-3xl font-bold">{current.title}</h3>
+            {current.metaDescription && (
+              <p className="mt-2 max-w-prose text-sm md:text-base text-white/90 line-clamp-3">
+                {current.metaDescription}
+              </p>
+            )}
+            <div className="mt-4">
+              <Link
+                href={`/posts/${current.slug}`}
+                className="inline-block bg-amber-600 text-white px-4 py-2 rounded-md shadow hover:bg-amber-700"
+              >
+                Read post
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <button
+          aria-label="Previous"
+          onClick={() => setIndex((i) => (i - 1 + posts.length) % posts.length)}
+          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow hover:bg-white"
+        >
+          ‹
+        </button>
+        <button
+          aria-label="Next"
+          onClick={() => setIndex((i) => (i + 1) % posts.length)}
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow hover:bg-white"
+        >
+          ›
+        </button>
+
+        {/* Indicators */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex gap-2">
+          {posts.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`w-3 h-3 rounded-full ${
+                i === index ? "bg-amber-600" : "bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

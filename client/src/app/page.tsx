@@ -5,23 +5,43 @@ import { useEffect, useState } from "react";
 import { Post } from "./lib/types";
 import { getPosts } from "./lib/api/postsApi";
 import Image from "next/image";
+import TopCarousel from "./components/TopCarousel";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 8;
 
   async function fetchPosts() {
     try {
       setPosts(await getPosts());
     } catch (err: any) {
       console.log("err: ", err);
-      setError(err.message);
     }
   }
 
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  // pagination helpers
+  const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const paginated = posts.slice(startIndex, startIndex + PAGE_SIZE);
+
+  // top 3 posts (sorted by updatedAt desc)
+  const topPosts = [...posts]
+    .sort(
+      (a, b) => +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any)
+    )
+    .slice(0, 3);
+
+  function goToPage(p: number) {
+    if (p < 1) p = 1;
+    if (p > totalPages) p = totalPages;
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6 min-w-sm">
@@ -34,8 +54,9 @@ export default function Home() {
       </header>
 
       <main>
+        {topPosts.length > 0 && <TopCarousel posts={topPosts} />}
         <div className="grid gap-6 md:grid-cols-2">
-          {posts.map((p) => (
+          {paginated.map((p) => (
             <Link href={`/posts/${p.slug}`} key={p.id}>
               <article className="bg-white rounded-lg shadow p-4">
                 {p.mainImageUrl && (
@@ -70,6 +91,45 @@ export default function Home() {
               </article>
             </Link>
           ))}
+        </div>
+
+        {/* Pagination controls */}
+        <div className="mt-8 flex items-center justify-center gap-2">
+          <button
+            onClick={() => goToPage(page - 1)}
+            disabled={page === 1}
+            className={`px-3 py-1 rounded ${
+              page === 1
+                ? "bg-gray-200 text-gray-500"
+                : "bg-amber-600 text-white hover:bg-amber-700"
+            }`}
+          >
+            Prev
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pNum) => (
+            <button
+              key={pNum}
+              onClick={() => goToPage(pNum)}
+              className={`px-3 py-1 rounded ${
+                pNum === page ? "bg-amber-700 text-white" : "bg-white border"
+              }`}
+            >
+              {pNum}
+            </button>
+          ))}
+
+          <button
+            onClick={() => goToPage(page + 1)}
+            disabled={page === totalPages}
+            className={`px-3 py-1 rounded ${
+              page === totalPages
+                ? "bg-gray-200 text-gray-500"
+                : "bg-amber-600 text-white hover:bg-amber-700"
+            }`}
+          >
+            Next
+          </button>
         </div>
       </main>
     </div>
