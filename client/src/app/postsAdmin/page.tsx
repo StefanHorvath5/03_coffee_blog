@@ -2,8 +2,9 @@
 import { useState } from "react";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
-import { Post } from "../lib/types";
+import { Post, Roles } from "../lib/types";
 import { useAuth } from "../lib/AuthProvider";
+import { notFound } from "next/navigation";
 
 export default function PostsPage() {
   const { user } = useAuth();
@@ -18,12 +19,14 @@ export default function PostsPage() {
     setEditing(undefined);
     setRefresh((r) => r + 1);
   }
+  
+  if (!user || user.role !== Roles.ADMIN) return notFound();
 
   return (
     <>
       <div className="max-w-2xl mx-auto mt-8">
         <h2 className="text-xl font-bold mb-2">Posts</h2>
-        {user && <PostForm post={editing} onSuccess={handleSuccess} />}
+        <PostForm post={editing} onSuccess={handleSuccess} />
         <PostList key={refresh} onEdit={handleEdit} />
       </div>
     </>

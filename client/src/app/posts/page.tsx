@@ -2,16 +2,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Post } from "./lib/types";
-import { getPosts } from "./lib/api/postsApi";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import TopCarousel from "./components/TopCarousel";
-import Hero from "./components/Hero";
+import { Post } from "../lib/types";
+import { getPosts } from "../lib/api/postsApi";
 
-export default function Home() {
+export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 4;
+  const PAGE_SIZE = 2;
+  const searchParams = useSearchParams();
 
   async function fetchPosts() {
     try {
@@ -25,15 +26,31 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
-  const startIndex = (page - 1) * PAGE_SIZE;
-  const paginated = posts.slice(startIndex, startIndex + PAGE_SIZE);
+  useEffect(() => {
+    const q = searchParams?.get("search") || "";
+    setQuery(q);
+    setPage(1);
+  }, [searchParams]);
 
-  const topPosts = [...posts]
-    .sort(
-      (a, b) => +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any)
-    )
-    .slice(0, 3);
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const filteredAll = query.trim()
+    ? posts.filter(
+        (p) =>
+          p.title.toLowerCase().includes(query.toLowerCase()) ||
+          p.metaDescription?.toLowerCase().includes(query.toLowerCase())
+      )
+    : [];
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil((query.trim() ? filteredAll.length : posts.length) / PAGE_SIZE)
+  );
+
+  const paginated = posts.slice(startIndex, startIndex + PAGE_SIZE);
+  const paginatedFiltered = filteredAll.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
 
   function goToPage(p: number) {
     if (p < 1) p = 1;
@@ -44,19 +61,35 @@ export default function Home() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 min-w-sm">
-      <Hero />
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold">Coffee explained</h1>
-        <p className="text-gray-600">
-          Learn all you need to know about coffee. Build your very own coffee
-          corner at home or explore coffee world with us.
-        </p>
-      </header>
-
       <main>
-        {topPosts.length > 0 && <TopCarousel posts={topPosts} />}
+        <div className="mb-6">
+          <label htmlFor="page-search" className="sr-only">
+            Search posts
+          </label>
+          <div className="max-w-4xl mx-auto flex gap-2">
+            <input
+              id="page-search"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setPage(1);
+              }}
+              placeholder="Filter posts by title..."
+              className="flex-1 px-4 py-2 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            />
+            <button
+              onClick={() => {
+                setQuery("");
+              }}
+              className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2">
-          {paginated.map((p) => (
+          {(query.trim() ? paginatedFiltered : paginated).map((p: Post) => (
             <Link href={`/posts/${p.slug}`} key={p.id}>
               <article className="bg-white rounded-lg shadow p-4">
                 {p.mainImageUrl && (

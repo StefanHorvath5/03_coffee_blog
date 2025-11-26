@@ -29,7 +29,6 @@ export default function Hero() {
           </div>
 
           <div className="md:w-1/3 p-6 flex items-center justify-center bg-[rgba(0,0,0,0.02)]">
-            {/* Simple decorative coffee cup SVG */}
             <svg
               width="140"
               height="140"

@@ -21,10 +21,11 @@ export default function TopCarousel({ posts }: Props) {
   if (!posts || posts.length === 0) return null;
 
   const current = posts[index];
+  const imageIsDark = false;
 
   return (
     <section className="container mx-auto mb-6">
-      <div className="relative rounded-lg overflow-hidden shadow-lg">
+      <div className="relative rounded-lg overflow-hidden shadow-lg group">
         {current.mainImageUrl ? (
           <div className="relative h-56 sm:h-72 md:h-80 lg:h-96">
             <Image
@@ -33,17 +34,37 @@ export default function TopCarousel({ posts }: Props) {
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            {imageIsDark ? (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/40 to-transparent" />
+            )}
           </div>
         ) : (
           <div className="h-56 sm:h-72 md:h-80 lg:h-96 bg-amber-100" />
         )}
 
         <div className="absolute inset-0 flex items-end">
-          <div className="p-6 pb-8 text-white w-full bg-gradient-to-t from-black/60 via-transparent to-transparent">
-            <h3 className="text-2xl md:text-3xl font-bold">{current.title}</h3>
+          <div
+            className={`p-6 pb-8 w-full backdrop-blur-sm ${
+              imageIsDark
+                ? "bg-gradient-to-t from-black/60 via-black/40 to-black/10"
+                : "bg-gradient-to-t from-white/60 via-white/40 to-white/20"
+            }`}
+          >
+            <h3
+              className={`${
+                imageIsDark ? "!text-white text-glow" : "text-amber-900"
+              } text-2xl md:text-3xl font-bold`}
+            >
+              {current.title}
+            </h3>
             {current.metaDescription && (
-              <p className="mt-2 max-w-prose text-sm md:text-base text-white/90 line-clamp-3">
+              <p
+                className={`${
+                  imageIsDark ? "text-white/95 text-glow" : "text-amber-800"
+                } mt-2 max-w-prose text-sm md:text-base line-clamp-3`}
+              >
                 {current.metaDescription}
               </p>
             )}
@@ -58,23 +79,23 @@ export default function TopCarousel({ posts }: Props) {
           </div>
         </div>
 
-        {/* Controls */}
         <button
           aria-label="Previous"
           onClick={() => setIndex((i) => (i - 1 + posts.length) % posts.length)}
-          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow hover:bg-white"
+          onPointerUp={(e) => (e.currentTarget as HTMLButtonElement).blur()}
+          className="absolute left-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100 pointer-events-none group-hover:pointer-events-auto focus:pointer-events-auto transition-opacity duration-200 bg-white/80 p-2 rounded-full shadow hover:bg-white"
         >
           ‹
         </button>
         <button
           aria-label="Next"
           onClick={() => setIndex((i) => (i + 1) % posts.length)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow hover:bg-white"
+          onPointerUp={(e) => (e.currentTarget as HTMLButtonElement).blur()}
+          className="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100 pointer-events-none group-hover:pointer-events-auto focus:pointer-events-auto transition-opacity duration-200 bg-white/80 p-2 rounded-full shadow hover:bg-white"
         >
           ›
         </button>
 
-        {/* Indicators */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex gap-2">
           {posts.map((_, i) => (
             <button

@@ -2,7 +2,8 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "../lib/AuthProvider";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
+import { Roles } from "../lib/types";
 
 export default function ProfilePage() {
   const { user, loading, logout } = useAuth();
@@ -20,7 +21,7 @@ export default function ProfilePage() {
   }
 
   if (loading) return <div>Loading...</div>;
-  if (!user) return <div>You are not logged in.</div>;
+  if (!user || user.role !== Roles.ADMIN) return notFound();
 
   return (
     <div className="max-w-sm mx-auto mt-8 space-y-4">
