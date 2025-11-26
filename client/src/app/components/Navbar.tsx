@@ -17,19 +17,6 @@ export default function Navbar() {
   const blurTimeout = useRef<number | null>(null);
   const pathname = usePathname();
   const isPostsPath = pathname === "/posts";
-
-  useEffect(() => {
-    let mounted = true;
-    getPosts()
-      .then((data) => {
-        if (mounted) setPosts(data || []);
-      })
-      .catch(() => {});
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const q = query.trim();
@@ -65,6 +52,18 @@ export default function Navbar() {
     }
     if (query.trim().length > 0) setShowDropdown(true);
   }
+
+  useEffect(() => {
+    let mounted = true;
+    getPosts()
+      .then((data) => {
+        if (mounted) setPosts(data || []);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <header className="mb-6">
@@ -183,36 +182,87 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {open && !isPostsPath && (
-        <div className="container mx-auto mt-2 p-4 bg-white rounded-md shadow-sm md:hidden">
-          <form onSubmit={onSubmit} className="flex items-center gap-2 mb-3">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search posts..."
-              className="flex-1 px-3 py-2 border rounded"
-            />
-            <button
-              type="submit"
-              className="px-3 py-2 bg-amber-600 text-white rounded"
-            >
-              Search
-            </button>
-          </form>
+      {open && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/10"
+            onClick={() => setOpen(false)}
+          />
 
-          <div className="flex flex-col gap-2">
-            <Link href="/posts" className="px-3 py-2 rounded hover:bg-amber-50">
-              All posts
-            </Link>
-            <Link href="/about" className="px-3 py-2 rounded hover:bg-amber-50">
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="px-3 py-2 rounded hover:bg-amber-50"
-            >
-              Contact
-            </Link>
+          <div className="relative bg-white shadow-md rounded-b-md transform transition-transform duration-300 ease-out">
+            <div className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/"
+                  className="font-extrabold text-lg text-amber-800 site-brand"
+                  onClick={() => setOpen(false)}
+                >
+                  Coffee Explained
+                </Link>
+              </div>
+              <button
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+                className="p-2 rounded-md hover:bg-amber-50"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-amber-700"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="px-4 pb-4">
+              <form
+                onSubmit={onSubmit}
+                className="flex items-center gap-2 mb-3"
+              >
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search posts..."
+                  className="flex-1 px-3 py-2 border rounded"
+                />
+                <button
+                  type="submit"
+                  className="px-3 py-2 bg-amber-600 text-white rounded"
+                >
+                  Search
+                </button>
+              </form>
+
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/posts"
+                  onClick={() => setOpen(false)}
+                  className="px-3 py-2 rounded hover:bg-amber-50"
+                >
+                  All posts
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={() => setOpen(false)}
+                  className="px-3 py-2 rounded hover:bg-amber-50"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className="px-3 py-2 rounded hover:bg-amber-50"
+                >
+                  Contact
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       )}
