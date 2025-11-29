@@ -32,6 +32,10 @@ export default function PostForm({
     setTitle(post?.title || "");
     setSlug(post?.slug || "");
     setHtml(post?.content ? JSON.stringify(post.content) : "");
+    setMainImageUrl(post?.mainImageUrl || "");
+    setMetaDescription(post?.metaDescription || "");
+    setSources(post?.sources || "");
+    setHashtags(post?.hashtags || "");
   }, [post]);
 
   async function handleSubmit(e: React.FormEvent) {

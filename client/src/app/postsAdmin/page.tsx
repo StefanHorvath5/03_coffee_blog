@@ -7,7 +7,7 @@ import { useAuth } from "../lib/AuthProvider";
 import { notFound } from "next/navigation";
 
 export default function PostsPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [editing, setEditing] = useState<Post | undefined>(undefined);
   const [refresh, setRefresh] = useState(0);
 
@@ -19,7 +19,8 @@ export default function PostsPage() {
     setEditing(undefined);
     setRefresh((r) => r + 1);
   }
-  
+
+  if (loading) return <div>Loading...</div>;
   if (!user || user.role !== Roles.ADMIN) return notFound();
 
   return (

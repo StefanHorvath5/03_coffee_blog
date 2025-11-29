@@ -30,7 +30,6 @@ function mapProps(props?: Record<string, unknown>) {
     } else {
       (out as Record<string, unknown>)[k] = v;
     }
-    console.log("k:", k, "v:", v);
   });
   return out;
 }

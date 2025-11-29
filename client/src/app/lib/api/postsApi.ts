@@ -1,6 +1,16 @@
 import { ContentBlock } from "../types";
 import { fetchWithAuth } from "./authApi";
 
+async function parseMaybeJson(res: Response) {
+  const text = await res.text();
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch (err) {
+    throw new Error("Failed to parse JSON response: " + (err as Error).message);
+  }
+}
+
 export async function getPosts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
   if (!res.ok) throw new Error("Failed to fetch posts");
@@ -8,7 +18,9 @@ export async function getPosts() {
 }
 
 export async function getPost(slug: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/posts/${slug}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/posts/${slug}`
+  );
   if (!res.ok) throw new Error("Failed to fetch post");
   return res.json();
 }
@@ -49,7 +61,7 @@ export async function updatePost(
     setAccessToken
   );
   if (!res.ok) throw new Error("Failed to update post");
-  return res.json();
+  return parseMaybeJson(res);
 }
 
 export async function deletePost(
