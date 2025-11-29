@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ErrorMessage from "../components/ErrorMessage";
 import { useAuth } from "../lib/AuthProvider";
-import Link from "next/link";
+import { useNotify } from "../lib/ErrorProvider";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,12 +12,14 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const { login } = useAuth();
+  const notify = useNotify();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     try {
       await login(email, password);
+      notify.showSuccess("Logged in");
       router.push("/profile");
     } catch (err: any) {
       setError(err.message);

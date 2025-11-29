@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../lib/AuthProvider";
+import { useNotify } from "../lib/ErrorProvider";
 import { notFound, useRouter } from "next/navigation";
 import { Roles } from "../lib/types";
 import Link from "next/link";
@@ -9,15 +10,15 @@ import Link from "next/link";
 export default function ProfilePage() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
-  const [error, setError] = useState("");
+  const notify = useNotify();
 
   async function handleLogout() {
-    setError("");
     try {
       await logout();
       router.push("/login");
+      notify.showSuccess("Logged out");
     } catch (err: any) {
-      setError("Logout failed");
+      notify.showError("Logout failed");
     }
   }
 
@@ -44,7 +45,6 @@ export default function ProfilePage() {
       >
         Logout
       </button>
-      {error && <div className="text-red-600 mt-2">{error}</div>}
     </div>
   );
 }

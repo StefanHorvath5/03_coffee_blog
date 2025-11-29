@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
@@ -12,6 +13,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }));
+
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   app.enableCors({
     origin: process.env.FRONTEND_ORIGIN,

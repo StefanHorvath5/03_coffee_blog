@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createPost, updatePost } from "../lib/api/postsApi";
 import { Post } from "../lib/types";
 import ErrorMessage from "../components/ErrorMessage";
+import { useNotify } from "../lib/ErrorProvider";
 import { useAuth } from "../lib/AuthProvider";
 import { parseHtmlToBlocks } from "../lib/parseHtmlToBlocks";
 
@@ -27,6 +28,7 @@ export default function PostForm({
   const [hashtags, setHashtags] = useState(post?.hashtags || "");
   const [error, setError] = useState("");
   const { accessToken, setAccessToken } = useAuth();
+  const notify = useNotify();
 
   useEffect(() => {
     setTitle(post?.title || "");
@@ -76,6 +78,7 @@ export default function PostForm({
       setSources("");
       setHashtags("");
       onSuccess();
+      notify.showSuccess(post ? "Post updated" : "Post created");
     } catch (err: any) {
       setError(err.message);
     }

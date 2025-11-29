@@ -7,17 +7,19 @@ import { getPosts } from "./lib/api/postsApi";
 import Image from "next/image";
 import TopCarousel from "./components/TopCarousel";
 import Hero from "./components/Hero";
+import { useNotify } from "./lib/ErrorProvider";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 4;
+  const notify = useNotify();
 
   async function fetchPosts() {
     try {
       setPosts(await getPosts());
     } catch (err: any) {
-      console.log("err: ", err);
+      notify.showError("Could not load posts. Try again later.");
     }
   }
 

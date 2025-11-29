@@ -3,21 +3,21 @@
 import { useEffect, useState } from "react";
 import { getPosts, deletePost } from "../lib/api/postsApi";
 import { Post, Roles } from "../lib/types";
-import ErrorMessage from "../components/ErrorMessage";
+import { useNotify, GENERIC_ERROR_MESSAGE } from "../lib/ErrorProvider";
 import { useAuth } from "../lib/AuthProvider";
 import BlockRenderer from "../components/BlockRenderer";
 import Image from "next/image";
 
 export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [error, setError] = useState("");
   const { user, accessToken, setAccessToken } = useAuth();
+  const notify = useNotify();
 
   async function fetchPosts() {
     try {
       setPosts(await getPosts());
     } catch (err: any) {
-      setError(err.message);
+      notify.showError(err.message || GENERIC_ERROR_MESSAGE);
     }
   }
 
@@ -29,14 +29,14 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
     try {
       await deletePost(id, accessToken, setAccessToken);
       fetchPosts();
+      notify.showSuccess("Post deleted");
     } catch (err: any) {
-      setError(err.message);
+      notify.showError(err.message || GENERIC_ERROR_MESSAGE);
     }
   }
 
   return (
     <div>
-      <ErrorMessage message={error} />
       <ul className="space-y-6">
         {posts.map((post) => (
           <li key={post.id} className="border p-4 rounded">

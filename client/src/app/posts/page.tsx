@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Post } from "../lib/types";
 import { getPosts } from "../lib/api/postsApi";
+import { useNotify } from "../lib/ErrorProvider";
 
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -13,12 +14,13 @@ export default function PostsPage() {
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 2;
   const searchParams = useSearchParams();
+  const notify = useNotify();
 
   async function fetchPosts() {
     try {
       setPosts(await getPosts());
     } catch (err: any) {
-      console.log("err: ", err);
+      notify.showError("Could not load posts. Try again later.");
     }
   }
 

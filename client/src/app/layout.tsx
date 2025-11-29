@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./lib/AuthProvider";
+import { ErrorProvider } from "./lib/ErrorProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -69,13 +71,16 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased has-pattern`}
+        style={{ ['--navbar-height' as any]: '64px' }}
       >
         <AuthProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-1 container mx-auto p-4">{children}</main>
-            <Footer />
-          </div>
+          <ErrorProvider>
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-1 container mx-auto p-4">{children}</main>
+              <Footer />
+            </div>
+          </ErrorProvider>
         </AuthProvider>
       </body>
     </html>

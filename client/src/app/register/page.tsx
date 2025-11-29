@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ErrorMessage from "../components/ErrorMessage";
 import { useAuth } from "../lib/AuthProvider";
+import { useNotify } from "../lib/ErrorProvider";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -11,12 +12,14 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const { register } = useAuth();
+  const notify = useNotify();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     try {
       await register(email, password);
+      notify.showSuccess("Registered");
       router.push("/profile");
     } catch (err: any) {
       setError(err.message);
