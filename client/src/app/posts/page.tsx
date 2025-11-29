@@ -12,21 +12,21 @@ export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<"date" | "views">("date");
+  const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
   const PAGE_SIZE = 2;
   const searchParams = useSearchParams();
   const notify = useNotify();
 
-  async function fetchPosts() {
-    try {
-      setPosts(await getPosts());
-    } catch (err: any) {
-      notify.showError("Could not load posts. Try again later.");
-    }
-  }
-
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    (async () => {
+      try {
+        setPosts(await getPosts());
+      } catch {
+        notify.showError("Could not load posts. Try again later.");
+      }
+    })();
+  }, [notify]);
 
   useEffect(() => {
     const q = searchParams?.get("search") || "";
@@ -41,18 +41,23 @@ export default function PostsPage() {
           p.title.toLowerCase().includes(query.toLowerCase()) ||
           p.metaDescription?.toLowerCase().includes(query.toLowerCase())
       )
-    : [];
+    : posts;
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil((query.trim() ? filteredAll.length : posts.length) / PAGE_SIZE)
-  );
+  const sortedAll = [...filteredAll].sort((a, b) => {
+    if (sortBy === "date") {
+      const diff = +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any);
+      return sortDir === "desc" ? diff : -diff;
+    }
+    const diff = (b.numOfViews || 0) - (a.numOfViews || 0);
+    return sortDir === "desc" ? diff : -diff;
+  });
 
-  const paginated = posts.slice(startIndex, startIndex + PAGE_SIZE);
-  const paginatedFiltered = filteredAll.slice(
-    startIndex,
-    startIndex + PAGE_SIZE
-  );
+  const totalPages = Math.max(1, Math.ceil(sortedAll.length / PAGE_SIZE));
+  const paginated = sortedAll.slice(startIndex, startIndex + PAGE_SIZE);
+
+  useEffect(() => {
+    setPage(1);
+  }, [sortBy, sortDir]);
 
   function goToPage(p: number) {
     if (p < 1) p = 1;
@@ -68,30 +73,92 @@ export default function PostsPage() {
           <label htmlFor="page-search" className="sr-only">
             Search posts
           </label>
-          <div className="max-w-4xl mx-auto flex gap-2">
-            <input
-              id="page-search"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setPage(1);
-              }}
-              placeholder="Filter posts by title..."
-              className="flex-1 px-4 py-2 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-300"
-            />
-            <button
-              onClick={() => {
-                setQuery("");
-              }}
-              className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
-            >
-              Clear
-            </button>
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center justify-end mb-2">
+              <div className="hidden sm:block text-sm text-gray-600 mr-2">
+                Sort by
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  aria-pressed={sortBy === "date"}
+                  onClick={() => {
+                    if (sortBy === "date") setSortDir((d) => (d === "desc" ? "asc" : "desc"));
+                    else {
+                      setSortBy("date");
+                      setSortDir("desc");
+                    }
+                  }}
+                  title={
+                    sortBy === "date"
+                      ? `Sort by date ${sortDir === "desc" ? "descending" : "ascending"}`
+                      : "Sort by date"
+                  }
+                  className={`text-sm focus:outline-none transition-colors flex items-center gap-1 ${
+                    sortBy === "date" ? "text-amber-600 font-semibold" : "text-gray-600"
+                  }`}
+                >
+                  <span>Date</span>
+                  {sortBy === "date" && (
+                    <span className="text-xs text-amber-600" aria-hidden>
+                      {sortDir === "desc" ? "▾" : "▴"}
+                    </span>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={sortBy === "views"}
+                  onClick={() => {
+                    if (sortBy === "views") setSortDir((d) => (d === "desc" ? "asc" : "desc"));
+                    else {
+                      setSortBy("views");
+                      setSortDir("desc");
+                    }
+                  }}
+                  title={
+                    sortBy === "views"
+                      ? `Sort by popularity ${sortDir === "desc" ? "descending" : "ascending"}`
+                      : "Sort by popularity"
+                  }
+                  className={`text-sm focus:outline-none transition-colors flex items-center gap-1 ${
+                    sortBy === "views" ? "text-amber-600 font-semibold" : "text-gray-600"
+                  }`}
+                >
+                  <span>Popularity</span>
+                  {sortBy === "views" && (
+                    <span className="text-xs text-amber-600" aria-hidden>
+                      {sortDir === "desc" ? "▾" : "▴"}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <input
+                id="page-search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setPage(1);
+                }}
+                placeholder="Filter posts by title..."
+                className="flex-1 px-4 py-2 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-300"
+              />
+              <button
+                onClick={() => {
+                  setQuery("");
+                }}
+                className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+              >
+                Clear
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {(query.trim() ? paginatedFiltered : paginated).map((p: Post) => (
+          {paginated.map((p: Post) => (
             <Link href={`/posts/${p.slug}`} key={p.id}>
               <article className="bg-white rounded-lg shadow p-4">
                 {p.mainImageUrl && (

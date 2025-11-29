@@ -12,30 +12,32 @@ import { useNotify } from "./lib/ErrorProvider";
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
+  
   const PAGE_SIZE = 4;
   const notify = useNotify();
 
-  async function fetchPosts() {
-    try {
-      setPosts(await getPosts());
-    } catch (err: any) {
-      notify.showError("Could not load posts. Try again later.");
-    }
-  }
-
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
-  const startIndex = (page - 1) * PAGE_SIZE;
-  const paginated = posts.slice(startIndex, startIndex + PAGE_SIZE);
+    (async () => {
+      try {
+        setPosts(await getPosts());
+      } catch {
+        notify.showError("Could not load posts. Try again later.");
+      }
+    })();
+  }, [notify]);
 
   const topPosts = [...posts]
-    .sort(
-      (a, b) => +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any)
-    )
+    .sort((a, b) => +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any))
     .slice(0, 3);
+
+  const topIds = new Set(topPosts.map((p) => p.id));
+  const otherPosts = posts
+    .filter((p) => !topIds.has(p.id))
+    .sort((a, b) => (b.numOfViews || 0) - (a.numOfViews || 0));
+
+  const totalPages = Math.max(1, Math.ceil(otherPosts.length / PAGE_SIZE));
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const paginated = otherPosts.slice(startIndex, startIndex + PAGE_SIZE);
 
   function goToPage(p: number) {
     if (p < 1) p = 1;

@@ -23,7 +23,6 @@ export async function fetchWithAuth(
       if (refreshRes.ok) {
         const { accessToken: newToken } = await refreshRes.json();
         setAccessToken(newToken);
-        // Retry original request once
         return fetchWithAuth(input, init, newToken, setAccessToken, false);
       }
     } catch {}

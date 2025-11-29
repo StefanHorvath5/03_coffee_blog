@@ -37,7 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const setAccessToken = React.useCallback((token: string | null) => {
-    // avoid updating if value is unchanged to prevent effect loops
     if (token === accessToken) return;
     if (typeof window !== "undefined") {
       if (token) localStorage.setItem(TOKEN_KEY, token);
