@@ -26,7 +26,7 @@ export async function getPost(slug: string) {
 }
 
 export async function createPost(
-  data: { title: string; slug?: string; content: ContentBlock[] },
+  data: { title: string; slug?: string; content: ContentBlock[]; hidden?: boolean },
   accessToken: string | null,
   setAccessToken: (token: string | null) => void
 ) {
@@ -46,7 +46,7 @@ export async function createPost(
 
 export async function updatePost(
   id: string,
-  data: { title?: string; slug?: string; content?: ContentBlock[] },
+  data: { title?: string; slug?: string; content?: ContentBlock[]; hidden?: boolean },
   accessToken: string | null,
   setAccessToken: (token: string | null) => void
 ) {
@@ -62,6 +62,15 @@ export async function updatePost(
   );
   if (!res.ok) throw new Error("Failed to update post");
   return parseMaybeJson(res);
+}
+
+export async function getAdminPosts(
+  accessToken: string | null,
+  setAccessToken: (token: string | null) => void
+) {
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/admin`, { method: 'GET' }, accessToken, setAccessToken);
+  if (!res.ok) throw new Error('Failed to fetch admin posts');
+  return res.json();
 }
 
 export async function deletePost(

@@ -24,6 +24,8 @@ export interface Post {
   metaDescription: string;
   sources: string;
   hashtags: string;
+  hidden?: boolean;
+  numOfViews?: number;
   createdAt: Date;
   updatedAt: Date;
 }

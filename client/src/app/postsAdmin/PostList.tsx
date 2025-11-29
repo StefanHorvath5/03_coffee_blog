@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState } from "react";
-import { getPosts, deletePost } from "../lib/api/postsApi";
+import { getPosts, deletePost, getAdminPosts } from "../lib/api/postsApi";
 import { Post, Roles } from "../lib/types";
 import { useNotify, GENERIC_ERROR_MESSAGE } from "../lib/ErrorProvider";
 import { useAuth } from "../lib/AuthProvider";
@@ -15,7 +15,8 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
 
   async function fetchPosts() {
     try {
-      setPosts(await getPosts());
+      setPosts(await getAdminPosts(accessToken, setAccessToken));
+      
     } catch (err: any) {
       notify.showError(err.message || GENERIC_ERROR_MESSAGE);
     }
@@ -64,6 +65,10 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
                 <div className="text-sm text-gray-500">
                   Hashtags: {post.hashtags}
                 </div>
+                <div className="text-sm text-gray-500">
+                  Hidden: {post.hidden ? 'yes' : 'no'}
+                </div>
+                <div className="text-sm text-gray-500">Views: {post.numOfViews ?? 0}</div>
               </div>
               {user && (
                 <div className="space-x-2">

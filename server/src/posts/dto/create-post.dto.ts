@@ -18,4 +18,5 @@ export class CreatePostDto {
   metaDescription: string;
   sources: string;
   hashtags: string;
+  hidden?: boolean;
 }

@@ -16,17 +16,28 @@ export class PostsService {
     return this.postsRepo.save(p);
   }
 
-  findAll() {
-    return this.postsRepo.find();
+  findAll(includeHidden = false) {
+    if (includeHidden) return this.postsRepo.find();
+    return this.postsRepo.find({ where: { hidden: false } });
   }
 
-  findOne(slug: string) {
-    return this.postsRepo.findOneBy({ slug });
+  async findOneBySlug(
+    slug: string,
+    increment = false,
+    requesterIsAdmin = false,
+  ) {
+    const post = await this.postsRepo.findOneBy({ slug });
+    if (!post || post.hidden) return null;
+    if (increment && !requesterIsAdmin) {
+      post.numOfViews = (post.numOfViews || 0) + 1;
+      await this.postsRepo.save(post);
+    }
+    return post;
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
     await this.postsRepo.update(id, updatePostDto);
-    return this.findOne(id);
+    return this.postsRepo.findOneBy({ id });
   }
 
   remove(id: string) {

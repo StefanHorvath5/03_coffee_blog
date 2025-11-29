@@ -23,4 +23,5 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
   metaDescription: string;
   sources: string;
   hashtags: string;
+  hidden?: boolean;
 }

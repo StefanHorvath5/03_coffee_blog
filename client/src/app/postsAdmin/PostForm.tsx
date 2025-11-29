@@ -26,6 +26,7 @@ export default function PostForm({
   );
   const [sources, setSources] = useState(post?.sources || "");
   const [hashtags, setHashtags] = useState(post?.hashtags || "");
+  const [hidden, setHidden] = useState<boolean>(post?.hidden ?? true);
   const [error, setError] = useState("");
   const { accessToken, setAccessToken } = useAuth();
   const notify = useNotify();
@@ -38,6 +39,7 @@ export default function PostForm({
     setMetaDescription(post?.metaDescription || "");
     setSources(post?.sources || "");
     setHashtags(post?.hashtags || "");
+    setHidden(post?.hidden ?? true);
   }, [post]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -53,6 +55,7 @@ export default function PostForm({
         metaDescription,
         sources,
         hashtags,
+        hidden,
       };
       if (slug.trim().length === 0) {
         payload.slug = title + "_" + Date.now();
@@ -137,6 +140,14 @@ export default function PostForm({
         onChange={(e) => setHashtags(e.target.value)}
         className="w-full p-2 border rounded"
       />
+      <label className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          checked={hidden}
+          onChange={(e) => setHidden(e.target.checked)}
+        />
+        <span>Hidden</span>
+      </label>
       <button
         type="submit"
         className="bg-blue-600 text-white px-4 py-2 rounded"

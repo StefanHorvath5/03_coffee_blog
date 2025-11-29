@@ -52,6 +52,12 @@ export class Post {
   @Column({ type: 'text', nullable: true })
   hashtags: string;
 
+  @Column({ type: 'boolean', default: false })
+  hidden: boolean;
+
+  @Column({ type: 'integer', default: 0 })
+  numOfViews: number;
+
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
