@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  server:
+    build: ./server
+    restart: always
+    command: npm run start:prod  # Changed to prod start
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      # Add other backend envs here
+    depends_on:
+      - db
+
+  client:
+    build: ./client
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=https://api.coffeexplained.com
+    depends_on:
+      - server
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - client
+      - server
+
+volumes:
+  db-data:
