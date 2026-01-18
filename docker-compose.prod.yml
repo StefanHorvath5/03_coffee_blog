@@ -12,18 +12,22 @@ services:
   server:
     build: ./server
     restart: always
-    command: npm run start:prod  # Changed to prod start
+    command: npm run start:prod
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-      # Add other backend envs here
+    ports:
+      - "3001:3001"
     depends_on:
       - db
 
   client:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        - NEXT_PUBLIC_API_URL=http://3.68.19.168:3001
     restart: always
-    environment:
-      - NEXT_PUBLIC_API_URL=https://api.coffeexplained.com
+    ports:
+      - "3000:3000"
     depends_on:
       - server
 
