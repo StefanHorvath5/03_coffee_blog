@@ -33,8 +33,6 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  app.setGlobalPrefix('api');
-
   await app.listen(Number(process.env.PORT), '0.0.0.0');
   console.log(`Backend running on ${Number(process.env.PORT)}`);
 }
