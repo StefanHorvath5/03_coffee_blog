@@ -20,9 +20,13 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
 
+  app.setGlobalPrefix('api');
+
   app.enableCors({
     origin: process.env.FRONTEND_ORIGIN,
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Accept,Authorization',
   });
 
   await app.listen(Number(process.env.PORT), '0.0.0.0');
