@@ -16,18 +16,24 @@ async function bootstrap() {
   );
   app.use(cookieParser());
 
-  app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }));
-
-  app.useGlobalFilters(new AllExceptionsFilter());
-
-  app.setGlobalPrefix('api');
-
   app.enableCors({
-    origin: process.env.FRONTEND_ORIGIN,
+    origin: process.env.FRONTEND_ORIGIN || true,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Accept,Authorization',
   });
+
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      limit: 100,
+      skip: (req) => req.method === 'OPTIONS',
+    }),
+  );
+
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  app.setGlobalPrefix('api');
 
   await app.listen(Number(process.env.PORT), '0.0.0.0');
   console.log(`Backend running on ${Number(process.env.PORT)}`);
