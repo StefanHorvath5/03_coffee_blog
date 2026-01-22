@@ -18,8 +18,10 @@ export default function ClientPost({ post }: Props) {
   }, [post]);
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded mt-6">
-      {currentPost.mainImageUrl && (
+    // <div className="max-w-3xl mx-auto p-6 bg-white rounded mt-6">
+
+    <div className="max-w-4xl mx-auto mt-4">
+      {/* {currentPost.mainImageUrl && (
         <Image
           src={currentPost.mainImageUrl}
           alt={currentPost.title}
@@ -32,9 +34,11 @@ export default function ClientPost({ post }: Props) {
       )}
 
       <h1 className="text-3xl font-bold mt-4">{currentPost.title}</h1>
-      <div className="prose mt-4">
+      <div className="prose mt-4"> */}
+      <div className="my-5">
         <BlockRenderer blocks={currentPost.content as any} />
       </div>
+      {/* </div> */}
 
       {currentPost.updatedAt !== currentPost.createdAt && (
         <div className="text-xs text-gray-400 mt-1">
@@ -56,10 +60,19 @@ export default function ClientPost({ post }: Props) {
       )}
 
       {currentPost.sources && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">Sources</h2>
-          <p className="text-sm text-gray-700 whitespace-pre-wrap">
+        <div className="mt-3">
+          <h2 className="text-l font-semibold">Sources</h2>
+          <p className="text-xs text-gray-500 whitespace-pre-wrap">
             {currentPost.sources}
+          </p>
+        </div>
+      )}
+
+      {currentPost.hashtags && (
+        <div className="mt-3">
+          <h2 className="text-l font-semibold">Hashtags</h2>
+          <p className="text-xs text-gray-500 whitespace-pre-wrap">
+            {currentPost.hashtags}
           </p>
         </div>
       )}

@@ -4,9 +4,7 @@ type NodeLike =
   | string
   | { type: string; props?: Record<string, string>; children?: NodeLike[] };
 
-
 function mapAttrs(el: Element): Record<string, string> {
-
   const props: Record<string, string> = {};
   ALLOWED_ATTRS.forEach((attr) => {
     const val = el.getAttribute(attr);
@@ -53,22 +51,20 @@ function elementToNode(el: Element): NodeLike {
 }
 
 export function parseHtmlToBlocks(html: string) {
-  const root: {
-    type: string;
-    props?: Record<string, string>;
-    children: NodeLike[];
-  } = {
-    type: "div",
-    props: {},
-    children: [],
-  };
-  if (!html) return root;
+  if (!html) return [];
+
+  try {
+    const maybe = JSON.parse(html);
+    if (Array.isArray(maybe)) return maybe as NodeLike[];
+  } catch (e) {}
+
+  const out: NodeLike[] = [];
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
 
   doc.body.childNodes.forEach((n) => {
-    handleChild(root.children, n);
+    handleChild(out, n);
   });
 
-  return root;
+  return out;
 }

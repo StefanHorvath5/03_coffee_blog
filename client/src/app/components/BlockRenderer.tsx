@@ -23,7 +23,10 @@ function mapProps(props?: Record<string, unknown>) {
           .split(";")
           .filter(Boolean)
           .map((rule) => {
-            const [key, value] = rule.split(":").map((s) => s.trim());
+            const idx = rule.indexOf(":");
+            if (idx === -1) return [rule.trim(), ""];
+            const key = rule.slice(0, idx).trim();
+            const value = rule.slice(idx + 1).trim();
             return [key, value];
           })
       );
