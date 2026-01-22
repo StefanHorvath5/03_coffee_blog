@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pastel Post — Cozy Notes</title>
+    <style>
+      :root {
+        --bg: #fcfbff;
+        --card: #ffffff;
+        --muted: #6b7280;
+        --accent: #7c3aed;
+        --radius: 12px;
+        --maxw: 900px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, Segoe UI, Roboto, Arial;
+        background: var(--bg);
+        color: #0f172a;
+      }
+      .container {
+        max-width: 880px;
+        margin: 18px auto;
+        background: var(--card);
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid #eef2ff;
+      }
+      header {
+        padding: 18px 20px;
+        background: linear-gradient(90deg, #fdf4ff 0%, #fff 100%);
+      }
+      .kicker {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      h1 {
+        margin: 6px 0 0;
+        font-size: 24px;
+        color: #111827;
+      }
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .content {
+        padding: 18px 20px 22px;
+        line-height: 1.7;
+      }
+      .lead {
+        font-size: 16px;
+        color: #374151;
+        margin-bottom: 12px;
+      }
+      img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin: 12px 0;
+      }
+      blockquote {
+        margin: 14px 0;
+        padding: 12px 14px;
+        border-left: 4px solid var(--accent);
+        background: #fbf8ff;
+        border-radius: 8px;
+        color: #111827;
+      }
+      .products {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .product {
+        flex: 1;
+        background: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #f3e8ff;
+      }
+      .product img {
+        height: 110px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .product h4 {
+        margin: 8px 0 6px;
+        font-size: 14px;
+      }
+      .product p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .product a {
+        display: inline-block;
+        margin-top: 8px;
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      @media (max-width: 720px) {
+        .products {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="container">
+      <header>
+        <div class="kicker">Short Reflection</div>
+        <h1>Soft Light, Small Joys</h1>
+        <div class="meta">By Alex • Jan 22, 2026</div>
+      </header>
+
+      <section class="content">
+        <p class="lead">
+          A gentle morning that asks for nothing but attention often returns the
+          most surprising details.
+        </p>
+        <p>
+          The kettle sings, the page waits. There is a distinct pleasure in
+          noticing the ordinary.
+        </p>
+        <img
+          src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b2b1c6e8b3a1f2d3c4e5f6a7b8c9d0e"
+          alt="morning table"
+        />
+        <blockquote>Begin with curiosity — the rest will follow.</blockquote>
+        <p>
+          These small notes are invitations. Try writing one sentence about the
+          first thing you notice tomorrow.
+        </p>
+
+        <div class="products">
+          <div class="product">
+            <img
+              src="https://images.unsplash.com/photo-1510627498534-cf7e9002facc?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1c1d2db6a1e5f3b0b7f8c5f4c2f6a1a3"
+              alt="french press"
+            />
+            <h4>Small French Press</h4>
+            <p>Classic, simple, delightful.</p>
+            <a
+              href="https://www.amazon.com/s?k=french+press"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on Amazon →</a
+            >
+          </div>
+          <div class="product">
+            <img
+              src="https://images.unsplash.com/photo-1523473827532-4b6a9f6d3f00?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b8a7c6d5e4f3a2b1c0d9e8f7a6b5c4d"
+              alt="notebook"
+            />
+            <h4>Field Notebook</h4>
+            <p>Jot thoughts, small and large.</p>
+            <a
+              href="https://www.amazon.com/s?k=notebook"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on Amazon →</a
+            >
+          </div>
+        </div>
+      </section>
+    </article>
+  </body>
+</html>

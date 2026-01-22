@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>A Cozy Coffee Post</title>
+    <style>
+      #template-01 {
+        --bg: #f6f7f9;
+        --card: #ffffff;
+        --muted: #6b7280;
+        --accent: #ef7f1a;
+        --glass: rgba(2, 6, 23, 0.03);
+        --radius: 10px;
+        --maxw: 900px;
+        --shadow: 0 6px 20px rgba(25, 25, 30, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      #template-01 {
+        height: auto;
+      }
+      #template-01 {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          Roboto, "Helvetica Neue", Arial;
+        background: var(--bg);
+        color: #111827;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* container adapts to surrounding app padding; center only horizontally */
+      #template-01 .wrap {
+        width: 100%;
+        max-width: var(--maxw);
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        border: 1px solid #e6e9ee;
+        margin: 20px auto;
+      }
+      #template-01 .hero {
+        position: relative;
+        height: 220px;
+        background-image: linear-gradient(
+            180deg,
+            rgba(3, 7, 18, 0.12),
+            rgba(3, 7, 18, 0.18)
+          ),
+          url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=8e0f3fe1ee0d8f6b0f7d2ea84b7b1b7f");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 18px 20px;
+        color: #fff;
+      }
+      #template-01 .kicker {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      #template-01 h1 {
+        margin: 6px 0 0;
+        font-family: "Georgia", serif;
+        font-weight: 700;
+        font-size: 22px;
+        color: #fff;
+      }
+      #template-01 .meta {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 13px;
+        margin-top: 6px;
+      }
+
+      #template-01 .content {
+        padding: 18px 20px 22px;
+        line-height: 1.7;
+        color: #111827;
+      }
+      #template-01 .lead {
+        font-size: 16px;
+        color: #111827;
+        margin-bottom: 12px;
+      }
+      #template-01 .two-col {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 16px;
+      }
+      #template-01 .article p {
+        margin: 0 0 12px;
+      }
+      #template-01 .article img {
+        max-width: 100%;
+        border-radius: 8px;
+        display: block;
+        margin: 12px 0;
+      }
+      #template-01 blockquote {
+        border-left: 3px solid var(--accent);
+        padding: 10px 14px;
+        background: var(--glass);
+        border-radius: 8px;
+        color: #2b2b2b;
+        margin: 14px 0;
+      }
+
+      #template-01 .aside {
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.02),
+          rgba(0, 0, 0, 0.01)
+        );
+        padding: 12px;
+        border-radius: 10px;
+        height: fit-content;
+      }
+      #template-01 .aside h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+      }
+      #template-01 .aside p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      #template-01 .products {
+        padding: 16px 20px 20px;
+      }
+      #template-01 .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      #template-01 .card {
+        background: var(--card);
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #f0f2f5;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      #template-01 .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(16, 24, 40, 0.08);
+      }
+      #template-01 .card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      #template-01 .card h4 {
+        font-size: 14px;
+        margin: 8px 0 6px;
+        color: #111827;
+      }
+      #template-01 .card p {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0;
+      }
+      #template-01 .card a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      /* responsive */
+      @media (max-width: 980px) {
+        #template-01 .two-col {
+          grid-template-columns: 1fr;
+        }
+        #template-01 .products-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        #template-01 .hero {
+          height: 200px;
+        }
+      }
+      @media (max-width: 560px) {
+        #template-01 .products-grid {
+          grid-template-columns: 1fr;
+        }
+        #template-01 .hero {
+          padding: 16px;
+        }
+        #template-01 .content {
+          padding: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body id="template-01">
+    <article class="wrap" role="article">
+      <header class="hero">
+        <div class="kicker">Personal Essay</div>
+        <h1>One Quiet Morning With Coffee and Thoughts</h1>
+        <div class="meta">By Jane Doe • Jan 22, 2026 • 6 min read</div>
+      </header>
+
+      <section class="content">
+        <p class="lead">
+          There are mornings that arrive with soft light, a slow kettle, and the
+          quiet permission to sit with your ideas. This is one of those
+          mornings.
+        </p>
+
+        <div class="two-col">
+          <div class="article">
+            <p>
+              Steam spirals from the cup as I watch the street wake up below.
+              The little rituals — grinding beans, the warmth of the mug — feel
+              like anchors. Stories gather in small corners of the day, waiting
+              for the right quiet to be told.
+            </p>
+
+            <img
+              src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8e0f3fe1ee0d8f6b0f7d2ea84b7b1b7f"
+              alt="path through trees"
+            />
+
+            <p>
+              When I pick up a pen, a line appears — then another. The rhythm of
+              creation often mirrors the rhythm of those ordinary acts. For me,
+              coffee is both companion and catalyst.
+            </p>
+
+            <blockquote>
+              Small, regular acts compound into the life you live; attention is
+              the currency.
+            </blockquote>
+
+            <p>
+              On days when the world feels loud, the simple act of slowing down
+              can be revolutionary. Invite attention back to the things that
+              matter. Notice the light. Notice the flavor. Notice the person
+              across the cafe smiling at nothing in particular.
+            </p>
+          </div>
+
+          <aside class="aside">
+            <h3>Quick Notes</h3>
+            <p>
+              Tip: Try a French press for a fuller-bodied cup. Let the grounds
+              bloom and breathe — patience rewards depth.
+            </p>
+            <hr
+              style="
+                margin: 12px 0;
+                border: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.03);
+              "
+            />
+            <h3 style="margin-top: 6px">Playlist</h3>
+            <p>
+              Soft jazz, low volume — background company for a reflective
+              morning.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="products">
+        <h2
+          style="margin: 0 0 12px; font-family: 'Georgia', serif; color: #fff"
+        >
+          Recommended Gear
+        </h2>
+        <p style="margin: 0 0 18px; color: var(--muted)">
+          Small extras that make the morning ritual a little nicer.
+        </p>
+
+        <div class="products-grid">
+          <div class="card">
+            <img
+              src="https://images.unsplash.com/photo-1510627498534-cf7e9002facc?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1c1d2db6a1e5f3b0b7f8c5f4c2f6a1a3"
+              alt="French press"
+            />
+            <h4>Classic French Press</h4>
+            <p>
+              Rich, full-bodied brews with a simple, elegant press. Easy to
+              clean and built to last.
+            </p>
+            <a
+              href="https://www.amazon.com/s?k=french+press"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on Amazon →</a
+            >
+          </div>
+
+          <div class="card">
+            <img
+              src="https://images.unsplash.com/photo-1509460913899-a05d9b0f6d7c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=7c9d1cec5d7c8a2c2b3f1e4b1c6c5b9d"
+              alt="burr grinder"
+            />
+            <h4>Burr Grinder</h4>
+            <p>
+              Consistent grind size for a cleaner, more balanced extraction. A
+              small upgrade with big flavor payoff.
+            </p>
+            <a
+              href="https://www.amazon.com/s?k=burr+coffee+grinder"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on Amazon →</a
+            >
+          </div>
+
+          <div class="card">
+            <img
+              src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0f4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1b2f3c4d5e6f7a8b9c0d1e2f3a4b5c6d"
+              alt="ceramic mug"
+            />
+            <h4>Handmade Ceramic Mug</h4>
+            <p>
+              Comfortable lip, excellent heat retention, and beautiful glaze
+              variations — an intimate daily object.
+            </p>
+            <a
+              href="https://www.amazon.com/s?k=ceramic+coffee+mug"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on Amazon →</a
+            >
+          </div>
+        </div>
+      </section>
+    </article>
+  </body>
+</html>
