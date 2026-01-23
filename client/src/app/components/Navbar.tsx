@@ -32,7 +32,7 @@ export default function Navbar() {
   const filtered = query.trim()
     ? posts
         .filter((p) => p.title.toLowerCase().includes(query.toLowerCase()))
-        .slice(0, 8)
+        .sort((a, b) => (b.numOfViews || 0) - (a.numOfViews || 0))
     : [];
 
   function handleInputChange(val: string) {
