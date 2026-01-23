@@ -30,9 +30,7 @@ export default function Footer() {
 
         <div className="md:text-right">
           <div className="text-amber-700">© {year} Coffee Explained</div>
-          <div className="text-xs text-amber-600">
-            Made with ☕ — join our mailing list for new posts.
-          </div>
+          <div className="text-xs text-amber-600">Made with ☕</div>
         </div>
       </div>
     </footer>
