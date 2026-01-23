@@ -114,7 +114,7 @@ export default function Navbar() {
                   onChange={(e) => handleInputChange(e.target.value)}
                   onBlur={handleInputBlur}
                   onFocus={handleInputFocus}
-                  placeholder="Search posts, recipes, tips..."
+                  placeholder="Search posts, guides, myths, tips..."
                   aria-label="Search posts"
                   aria-controls="search-results"
                   className="w-full px-4 py-2 rounded-l-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white"
@@ -124,7 +124,7 @@ export default function Navbar() {
                   <ul
                     id="search-results"
                     role="listbox"
-                    className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-md z-50 max-h-64 overflow-auto"
+                    className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-md z-50 max-h-64 overflow-auto p-1 space-y-1"
                   >
                     {filtered.map((p) => (
                       <li key={p.id} role="option" aria-selected={false}>
@@ -134,20 +134,21 @@ export default function Navbar() {
                             setShowDropdown(false);
                             setQuery("");
                           }}
-                          className="flex items-center gap-3 px-3 py-2 hover:bg-amber-50"
+                          className="flex items-center gap-3 px-3 h-12 rounded-md hover:bg-amber-50"
                         >
-                          {p.mainImageUrl ? (
-                            <Image
-                              src={p.mainImageUrl}
-                              alt={p.title}
-                              width={56}
-                              height={40}
-                              className="object-cover rounded"
-                            />
-                          ) : (
-                            <div className="w-14 h-10 bg-amber-100 rounded" />
-                          )}
-                          <span className="text-sm text-amber-800">
+                          <div className="w-14 h-10 md:h-12 relative flex-shrink-0 rounded overflow-hidden bg-amber-100">
+                            {p.mainImageUrl ? (
+                              <Image
+                                src={p.mainImageUrl}
+                                alt={p.title}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full" />
+                            )}
+                          </div>
+                          <span className="text-sm text-amber-800 truncate">
                             {p.title}
                           </span>
                         </Link>
