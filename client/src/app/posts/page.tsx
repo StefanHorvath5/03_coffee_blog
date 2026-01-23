@@ -39,13 +39,14 @@ export default function PostsPage() {
     ? posts.filter(
         (p) =>
           p.title.toLowerCase().includes(query.toLowerCase()) ||
-          p.metaDescription?.toLowerCase().includes(query.toLowerCase())
+          p.metaDescription?.toLowerCase().includes(query.toLowerCase()),
       )
     : posts;
 
   const sortedAll = [...filteredAll].sort((a, b) => {
     if (sortBy === "date") {
-      const diff = +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any);
+      const diff =
+        +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any);
       return sortDir === "desc" ? diff : -diff;
     }
     const diff = (b.numOfViews || 0) - (a.numOfViews || 0);
@@ -67,7 +68,7 @@ export default function PostsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 min-w-sm">
+    <div className="max-w-4xl mx-auto p-6 min-w-s">
       <main>
         <div className="mb-6">
           <label htmlFor="page-search" className="sr-only">
@@ -83,7 +84,8 @@ export default function PostsPage() {
                   type="button"
                   aria-pressed={sortBy === "date"}
                   onClick={() => {
-                    if (sortBy === "date") setSortDir((d) => (d === "desc" ? "asc" : "desc"));
+                    if (sortBy === "date")
+                      setSortDir((d) => (d === "desc" ? "asc" : "desc"));
                     else {
                       setSortBy("date");
                       setSortDir("desc");
@@ -95,7 +97,9 @@ export default function PostsPage() {
                       : "Sort by date"
                   }
                   className={`text-sm focus:outline-none transition-colors flex items-center gap-1 ${
-                    sortBy === "date" ? "text-amber-600 font-semibold" : "text-gray-600"
+                    sortBy === "date"
+                      ? "text-amber-600 font-semibold"
+                      : "text-gray-600"
                   }`}
                 >
                   <span>Date</span>
@@ -109,7 +113,8 @@ export default function PostsPage() {
                   type="button"
                   aria-pressed={sortBy === "views"}
                   onClick={() => {
-                    if (sortBy === "views") setSortDir((d) => (d === "desc" ? "asc" : "desc"));
+                    if (sortBy === "views")
+                      setSortDir((d) => (d === "desc" ? "asc" : "desc"));
                     else {
                       setSortBy("views");
                       setSortDir("desc");
@@ -121,7 +126,9 @@ export default function PostsPage() {
                       : "Sort by popularity"
                   }
                   className={`text-sm focus:outline-none transition-colors flex items-center gap-1 ${
-                    sortBy === "views" ? "text-amber-600 font-semibold" : "text-gray-600"
+                    sortBy === "views"
+                      ? "text-amber-600 font-semibold"
+                      : "text-gray-600"
                   }`}
                 >
                   <span>Popularity</span>
@@ -134,7 +141,7 @@ export default function PostsPage() {
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 items-stretch">
               <input
                 id="page-search"
                 value={query}
@@ -143,13 +150,13 @@ export default function PostsPage() {
                   setPage(1);
                 }}
                 placeholder="Filter posts by title..."
-                className="flex-1 px-4 py-2 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                className="flex-1 min-w-0 w-full px-4 py-2 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-300"
               />
               <button
                 onClick={() => {
                   setQuery("");
                 }}
-                className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+                className="w-full sm:w-auto px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 mt-2 sm:mt-0"
               >
                 Clear
               </button>
