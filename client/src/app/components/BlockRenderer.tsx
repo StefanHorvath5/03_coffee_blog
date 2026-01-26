@@ -30,6 +30,8 @@ function mapProps(props?: Record<string, unknown>) {
             return [key, value];
           })
       );
+    } else if (k === "class") {
+      (out as Record<string, unknown>)["className"] = v;
     } else {
       (out as Record<string, unknown>)[k] = v;
     }

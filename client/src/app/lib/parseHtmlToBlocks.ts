@@ -23,8 +23,11 @@ function extractChildren(el: Element): NodeLike[] {
 
 function handleChild(out: NodeLike[], child: ChildNode) {
   if (child.nodeType === Node.TEXT_NODE) {
-    const txt = child.textContent?.trim();
-    if (txt) out.push(txt);
+    const raw = child.textContent;
+    if (raw !== null && raw !== undefined) {
+      const normalized = raw.replace(/\s+/g, " ");
+      if (normalized !== "") out.push(normalized);
+    }
   } else if (child.nodeType === Node.ELEMENT_NODE) {
     const childEl = child as Element;
     const tag = childEl.tagName.toLowerCase();
