@@ -19,7 +19,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.USER,
+    default: UserRole.ADMIN,
   })
   role!: UserRole;
 
