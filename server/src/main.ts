@@ -23,6 +23,16 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Accept,Authorization',
   });
 
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    limit: 10, 
+    standardHeaders: true, 
+    legacyHeaders: false, 
+    message: 'Too many login attempts, please try again after 15 minutes',
+  });
+
+  app.use('/api/auth', authLimiter);
+
   app.use(
     rateLimit({
       windowMs: 5 * 60 * 1000,
