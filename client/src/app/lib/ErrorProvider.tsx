@@ -1,5 +1,12 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+  useMemo,
+} from "react";
 
 export const GENERIC_ERROR_MESSAGE =
   "Something went wrong — please try again later.";
@@ -18,23 +25,30 @@ const NotifyContext = createContext<NotifyContextType | undefined>(undefined);
 
 export function ErrorProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const push = (type: ToastType, message: string) => {
-    const id = Date.now() + Math.floor(Math.random() * 1000);
-    const t: Toast = { id, type, message };
-    setToasts((s) => [t, ...s]);
-    setTimeout(() => remove(id), 4200);
-  };
 
-  const remove = (id: number) => {
+  const remove = useCallback((id: number) => {
     setToasts((s) => s.filter((t) => t.id !== id));
-  };
+  }, []);
 
-  const context: NotifyContextType = {
-    showError: (m: string) => push("error", m),
-    showSuccess: (m: string) => push("success", m),
-    showWarning: (m: string) => push("warning", m),
-    showInfo: (m: string) => push("info", m),
-  };
+  const push = useCallback(
+    (type: ToastType, message: string) => {
+      const id = Date.now() + Math.floor(Math.random() * 1000);
+      const t: Toast = { id, type, message };
+      setToasts((s) => [t, ...s]);
+      setTimeout(() => remove(id), 4200);
+    },
+    [remove],
+  );
+
+  const context: NotifyContextType = useMemo(
+    () => ({
+      showError: (m: string) => push("error", m),
+      showSuccess: (m: string) => push("success", m),
+      showWarning: (m: string) => push("warning", m),
+      showInfo: (m: string) => push("info", m),
+    }),
+    [push],
+  );
 
   return (
     <NotifyContext.Provider value={context}>
@@ -63,10 +77,10 @@ export function ErrorProvider({ children }: { children: ReactNode }) {
                     {t.type === "error"
                       ? "Error"
                       : t.type === "success"
-                      ? "Success"
-                      : t.type === "warning"
-                      ? "Warning"
-                      : "Info"}
+                        ? "Success"
+                        : t.type === "warning"
+                          ? "Warning"
+                          : "Info"}
                   </div>
                   <div className={`${t.type === "error" ? "text-white" : ""}`}>
                     {t.message}

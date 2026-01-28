@@ -46,10 +46,19 @@ export class PostsController {
   //   return this.postsService.findOne(id);
   // }
   @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.postsService.findOneBySlug(slug);
+  }
+
+  @Post(':slug/view')
   @UseGuards(OptionalJwtAuthGuard)
-  findOne(@Param('slug') slug: string, @Req() req: any) {
-    const requesterIsAdmin = !!(req && req.user && req.user.role === UserRole.ADMIN);
-    return this.postsService.findOneBySlug(slug, true, requesterIsAdmin);
+  view(@Param('slug') slug: string, @Req() req: any) {
+    const requesterIsAdmin = !!(
+      req &&
+      req.user &&
+      req.user.role === UserRole.ADMIN
+    );
+    return this.postsService.incrementViews(slug, requesterIsAdmin);
   }
 
   @Patch(':id')
