@@ -12,7 +12,7 @@ import { useNotify } from "./lib/ErrorProvider";
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
-  
+
   const PAGE_SIZE = 4;
   const notify = useNotify();
 
@@ -27,7 +27,9 @@ export default function Home() {
   }, [notify]);
 
   const topPosts = [...posts]
-    .sort((a, b) => +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any))
+    .sort(
+      (a, b) => +new Date(b.updatedAt as any) - +new Date(a.updatedAt as any),
+    )
     .slice(0, 3);
 
   const topIds = new Set(topPosts.map((p) => p.id));
@@ -47,7 +49,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 min-w-s">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-4 sm:py-6 min-w-s">
       <Hero />
       <header className="mb-6">
         <h1 className="text-3xl font-bold">Coffee explained</h1>

@@ -24,7 +24,7 @@ export default function TopCarousel({ posts }: Props) {
   const imageIsDark = false;
 
   return (
-    <section className="container mx-auto mb-6">
+    <section className="mx-auto mb-6">
       <div className="relative rounded-lg overflow-hidden shadow-lg group">
         {current.mainImageUrl ? (
           <div className="relative h-56 sm:h-72 md:h-80 lg:h-96">
