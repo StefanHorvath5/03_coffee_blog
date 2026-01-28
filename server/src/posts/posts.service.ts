@@ -21,17 +21,17 @@ export class PostsService {
     return this.postsRepo.find({ where: { hidden: false } });
   }
 
-  async findOneBySlug(
-    slug: string,
-    increment = false,
-    requesterIsAdmin = false,
-  ) {
+  async findOneBySlug(slug: string) {
     const post = await this.postsRepo.findOneBy({ slug });
     if (!post || post.hidden) return null;
-    if (increment && !requesterIsAdmin) {
-      post.numOfViews = (post.numOfViews || 0) + 1;
-      await this.postsRepo.save(post);
-    }
+    return post;
+  }
+
+  async incrementViews(slug: string, requesterIsAdmin = false) {
+    const post = await this.postsRepo.findOneBy({ slug });
+    if (!post || post.hidden) return null;
+    post.numOfViews = (post.numOfViews || 0) + 1;
+    await this.postsRepo.save(post);
     return post;
   }
 

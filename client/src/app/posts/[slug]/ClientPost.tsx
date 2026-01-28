@@ -1,25 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Post } from "@/app/lib/types";
+import { Post, Roles } from "@/app/lib/types";
 import BlockRenderer from "@/app/components/BlockRenderer";
+import { useEffect } from "react";
+import { useAuth } from "@/app/lib/AuthProvider";
 
 interface Props {
   post: Post;
 }
 
 export default function ClientPost({ post }: Props) {
-  const [currentPost, setCurrentPost] = useState<Post>(post);
+  const currentPost = post;
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    setCurrentPost(post);
-  }, [post]);
+    if (!currentPost || !currentPost.slug) return;
+    if (loading) return;
+    if (user && user.role === Roles.ADMIN) return;
+
+    (async () => {
+      try {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${currentPost.slug}/view`,
+          {
+            method: "POST",
+          },
+        );
+      } catch (err) {
+      }
+    })();
+  }, [currentPost, user, loading]);
 
   return (
-    // <div className="max-w-3xl mx-auto p-6 bg-white rounded mt-6">
-
     <div className="max-w-4xl mx-auto mt-4">
       {/* {currentPost.mainImageUrl && (
         <Image
@@ -62,9 +75,26 @@ export default function ClientPost({ post }: Props) {
       {currentPost.sources && (
         <div className="mt-3">
           <h2 className="text-l font-semibold">Sources</h2>
-          <p className="text-xs text-gray-500 whitespace-pre-wrap">
-            {currentPost.sources}
-          </p>
+          <div className="text-xs text-gray-500">
+            {currentPost.sources.split(",").map((s: string, i: number) => {
+              const trimmed = s.trim();
+              if (!trimmed) return null;
+              const url = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+              return (
+                <span key={i}>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    {trimmed}
+                  </a>
+                  {i < currentPost.sources.split(",").length - 1 ? ", " : ""}
+                </span>
+              );
+            })}
+          </div>
         </div>
       )}
 
