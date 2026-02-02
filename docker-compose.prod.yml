@@ -10,6 +10,8 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - internal
+    cap_drop:
+      - ALL
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
@@ -19,6 +21,10 @@ services:
   server:
     build: ./server
     restart: unless-stopped
+    user: "node"
+    read_only: true 
+    tmpfs:
+      - /tmp
     command: npm run start:prod
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
@@ -36,14 +42,18 @@ services:
       context: ./client
       args:
         - NEXT_PUBLIC_API_URL=/api
-    env_file: ./client/.env
     restart: unless-stopped
+    user: "node"
+    read_only: true
+    tmpfs:
+      - /tmp
     networks:
       - internal
     depends_on:
       - server
     environment:
       - NODE_ENV=production
+    env_file: ./client/.env
 
   nginx:
     image: nginx:alpine
