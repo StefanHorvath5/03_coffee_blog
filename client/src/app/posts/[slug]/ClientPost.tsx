@@ -22,7 +22,7 @@ export default function ClientPost({ post }: Props) {
     (async () => {
       try {
         await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${currentPost.slug}/view`,
+          `${process.env.NEXT_PUBLIC_API_URL}/posts/${currentPost.slug}/view`,
           {
             method: "POST",
           },

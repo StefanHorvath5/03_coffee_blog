@@ -43,7 +43,7 @@ export async function fetchWithAuth(
   if (res.status === 401 && retry) {
     try {
       const refreshRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {
           method: "POST",
           credentials: "include",
@@ -55,7 +55,7 @@ export async function fetchWithAuth(
         return fetchWithAuth(input, init, newToken, setAccessToken, false);
       }
     } catch (err) {
-      markFailure(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`);
+      markFailure(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`);
     }
   }
   return res;
@@ -65,7 +65,7 @@ export async function login(
   data: { email: string; password: string },
   setAccessToken: (token: string | null) => void,
 ) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -83,7 +83,7 @@ export async function register(
   setAccessToken: (token: string | null) => void,
 ) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -100,7 +100,7 @@ export async function register(
 
 export async function refresh(setAccessToken: (token: string | null) => void) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`,
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
     {
       method: "POST",
       credentials: "include",
@@ -118,7 +118,7 @@ export async function getProfile(
   setAccessToken: (token: string | null) => void,
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`,
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/profile`,
     {},
     accessToken,
     setAccessToken,
@@ -132,7 +132,7 @@ export async function logout(
   setAccessToken: (token: string | null) => void,
 ) {
   await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
     { method: "POST" },
     accessToken,
     setAccessToken,

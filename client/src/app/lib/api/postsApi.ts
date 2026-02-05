@@ -12,14 +12,14 @@ async function parseMaybeJson(res: Response) {
 }
 
 export async function getPosts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
   if (!res.ok) throw new Error("Failed to fetch posts");
   return res.json();
 }
 
 export async function getPost(slug: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/posts/${slug}`
+    `${process.env.NEXT_PUBLIC_SERVER_API_URL}/posts/${slug}`
   );
   if (!res.ok) throw new Error("Failed to fetch post");
   return res.json();
@@ -31,7 +31,7 @@ export async function createPost(
   setAccessToken: (token: string | null) => void
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/posts`,
+    `${process.env.NEXT_PUBLIC_API_URL}/posts`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -51,7 +51,7 @@ export async function updatePost(
   setAccessToken: (token: string | null) => void
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ export async function getAdminPosts(
   accessToken: string | null,
   setAccessToken: (token: string | null) => void
 ) {
-  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/admin`, { method: 'GET' }, accessToken, setAccessToken);
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/posts/admin`, { method: 'GET' }, accessToken, setAccessToken);
   if (!res.ok) throw new Error('Failed to fetch admin posts');
   return res.json();
 }
@@ -79,7 +79,7 @@ export async function deletePost(
   setAccessToken: (token: string | null) => void
 ) {
   const res = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,
     { method: "DELETE" },
     accessToken,
     setAccessToken
