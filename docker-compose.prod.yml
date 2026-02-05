@@ -39,7 +39,7 @@ services:
     build:
       context: ./client
       args:
-        - NEXT_PUBLIC_API_URL=/api
+        - NEXT_PUBLIC_API_URL=/
     restart: unless-stopped
     user: "node"
     read_only: true
