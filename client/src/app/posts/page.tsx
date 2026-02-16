@@ -169,7 +169,7 @@ export default function PostsPage() {
             <Link href={`/posts/${p.slug}`} key={p.id}>
               <article className="bg-white rounded-lg shadow p-4">
                 {p.mainImageUrl && (
-                  <Image
+                  <img
                     src={p.mainImageUrl}
                     alt={p.title}
                     width={300}

@@ -138,10 +138,9 @@ export default function Navbar() {
                         >
                           <div className="w-14 h-10 md:h-12 relative flex-shrink-0 rounded overflow-hidden bg-amber-100">
                             {p.mainImageUrl ? (
-                              <Image
+                              <img
                                 src={p.mainImageUrl}
                                 alt={p.title}
-                                fill
                                 className="object-cover"
                               />
                             ) : (

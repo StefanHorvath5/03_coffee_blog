@@ -55,7 +55,7 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
                 <div className="text-sm text-gray-500">
                   Main image url:
                   {post.mainImageUrl && post.mainImageUrl.length > 0 && (
-                    <Image
+                    <img
                       src={post.mainImageUrl}
                       alt={"No main image"}
                       width={50}
@@ -72,7 +72,9 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
                     post.sources.split(",").map((s, i) => {
                       const trimmed = s.trim();
                       if (!trimmed) return null;
-                      const url = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+                      const url = /^https?:\/\//i.test(trimmed)
+                        ? trimmed
+                        : `https://${trimmed}`;
                       return (
                         <span key={i}>
                           <a
