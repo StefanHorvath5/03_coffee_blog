@@ -144,7 +144,7 @@ export default function Navbar() {
                               <img
                                 src={p.mainImageUrl}
                                 alt={p.title}
-                                className="object-cover"
+                                className="object-cover block w-full h-full"
                               />
                             ) : (
                               <div className="w-full h-full" />
