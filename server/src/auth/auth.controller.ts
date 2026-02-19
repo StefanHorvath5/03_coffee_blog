@@ -12,7 +12,7 @@ import {
 import { Response, Request } from 'express';
 import { AuthService, JwtPayload } from './auth.service';
 import { LoginDto } from 'src/users/dto/login.dto';
-import { RegisterDto } from 'src/users/dto/register.dto';
+// import { RegisterDto } from 'src/users/dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 
@@ -50,24 +50,24 @@ export class AuthController {
     }
   }
 
-  @HttpCode(HttpStatus.OK)
-  @Post('register')
-  async register(
-    @Body() registerDto: RegisterDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const { user, tokens } = await this.authService.register(registerDto);
-    res.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-    return {
-      accessToken: tokens.accessToken,
-      user: { id: user.id, email: user.email, role: user.role },
-    };
-  }
+  // @HttpCode(HttpStatus.OK)
+  // @Post('register')
+  // async register(
+  //   @Body() registerDto: RegisterDto,
+  //   @Res({ passthrough: true }) res: Response,
+  // ) {
+  //   const { user, tokens } = await this.authService.register(registerDto);
+  //   res.cookie('refreshToken', tokens.refreshToken, {
+  //     httpOnly: true,
+  //     secure: process.env.NODE_ENV === 'production',
+  //     sameSite: 'lax',
+  //     maxAge: 7 * 24 * 60 * 60 * 1000,
+  //   });
+  //   return {
+  //     accessToken: tokens.accessToken,
+  //     user: { id: user.id, email: user.email, role: user.role },
+  //   };
+  // }
 
   @Post('refresh')
   async refresh(
