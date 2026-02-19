@@ -128,13 +128,16 @@ export default function Navbar() {
                   >
                     {filtered.map((p) => (
                       <li key={p.id} role="option" aria-selected={false}>
-                        <Link
-                          href={`/posts/${p.slug}`}
-                          onClick={() => {
+                        <button
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            router.push(`/posts/${p.slug}`);
                             setShowDropdown(false);
                             setQuery("");
                           }}
-                          className="flex items-center gap-3 px-3 h-12 rounded-md hover:bg-amber-50"
+                          className="flex items-center gap-3 px-3 h-12 rounded-md hover:bg-amber-50 text-left w-full"
+                          role="link"
                         >
                           <div className="w-14 h-10 md:h-12 relative flex-shrink-0 rounded overflow-hidden bg-amber-100">
                             {p.mainImageUrl ? (
@@ -150,7 +153,7 @@ export default function Navbar() {
                           <span className="text-sm text-amber-800 truncate">
                             {p.title}
                           </span>
-                        </Link>
+                        </button>
                       </li>
                     ))}
                   </ul>
