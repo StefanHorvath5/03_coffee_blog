@@ -136,7 +136,7 @@ export default function Navbar() {
                             setShowDropdown(false);
                             setQuery("");
                           }}
-                          className="flex items-center gap-3 px-3 h-12 rounded-md hover:bg-amber-50 text-left w-full"
+                          className="flex items-center gap-3 px-3 h-12 rounded-md hover:bg-amber-50 text-left w-full cursor-pointer"
                           role="link"
                         >
                           <div className="w-14 h-10 md:h-12 relative flex-shrink-0 rounded overflow-hidden bg-amber-100">
@@ -169,15 +169,15 @@ export default function Navbar() {
           )}
 
           <div className="hidden md:flex items-center gap-4 text-sm text-amber-800">
-            <Link href="/about" className="hover:underline">
+            <Link href="/about" className="hover:underline cursor-pointer">
               About
             </Link>
-            <Link href="/contact" className="hover:underline">
+            <Link href="/contact" className="hover:underline cursor-pointer">
               Contact
             </Link>
             <Link
               href="/posts"
-              className="px-3 py-1 bg-amber-600 text-white rounded hover:bg-amber-700"
+              className="px-3 py-1 bg-amber-600 text-white rounded hover:bg-amber-700 cursor-pointer"
             >
               Posts
             </Link>
@@ -246,21 +246,21 @@ export default function Navbar() {
                 <Link
                   href="/posts"
                   onClick={() => setOpen(false)}
-                  className="px-3 py-2 rounded hover:bg-amber-50"
+                  className="px-3 py-2 rounded hover:bg-amber-50 cursor-pointer"
                 >
                   All posts
                 </Link>
                 <Link
                   href="/about"
                   onClick={() => setOpen(false)}
-                  className="px-3 py-2 rounded hover:bg-amber-50"
+                  className="px-3 py-2 rounded hover:bg-amber-50 cursor-pointer"
                 >
                   About
                 </Link>
                 <Link
                   href="/contact"
                   onClick={() => setOpen(false)}
-                  className="px-3 py-2 rounded hover:bg-amber-50"
+                  className="px-3 py-2 rounded hover:bg-amber-50 cursor-pointer"
                 >
                   Contact
                 </Link>

@@ -46,7 +46,7 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
                 <div className="font-bold text-xl">
                   <Link
                     href={`/posts/${post.slug}`}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 hover:underline cursor-pointer"
                   >
                     {post.title}
                   </Link>
@@ -81,7 +81,7 @@ export default function PostList({ onEdit }: { onEdit: (post: Post) => void }) {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 underline text-xs"
+                            className="text-blue-600 underline text-xs cursor-pointer"
                           >
                             {trimmed}
                           </a>
