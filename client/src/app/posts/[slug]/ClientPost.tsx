@@ -81,7 +81,7 @@ export default function ClientPost({ post }: Props) {
               if (!trimmed) return null;
               const url = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
               return (
-                <span key={i}>
+                <span key={i} className="break-words">
                   <a
                     href={url}
                     target="_blank"
